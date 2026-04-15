@@ -187,7 +187,7 @@ This robust approach avoids:
 This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
 
 > [!WARNING]
-> This script is intended for educational purposes and to help users unlock a harmless GitHub achievement. Please use responsibly and do not abuse automation to spam repositories. The author is not responsible for any consequences arising from misuse of this tool.
+> **This script is intended for educational purposes and to help users unlock a harmless GitHub achievement**. Please use responsibly and do not abuse automation to spam repositories. The author is not responsible for any consequences arising from misuse of this tool.
 
 ---
 
