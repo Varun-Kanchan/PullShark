@@ -47,6 +47,23 @@ This script automates the creation and merging of pull requests, so you can unlo
 | :--: | :----: | :----: | :--: |
 | [![Base](https://github.com/Shineii86/PullShark/blob/main/images/pull-shark-default.png)](https://github.com/Shineii86/PullShark) | [![Bronze](https://github.com/Shineii86/PullShark/blob/main/images/pull-shark-bronze.png)](https://github.com/Shineii86/PullShark) | [![Silver](https://github.com/Shineii86/PullShark/blob/main/images/pull-shark-silver.png)](https://github.com/Shineii86/PullShark) | [![Gold](https://github.com/Shineii86/PullShark/blob/main/images/pull-shark-gold.png)](https://github.com/Shineii86/PullShark) |
 
+
+> To earn the "**Pull Shark**" achievement on GitHub, you need to have your pull requests (PRs) merged. The badge has four tiers, each requiring a specific number of merged PRs.
+
+### 🦈 Pull Shark Achievement Tiers
+
+The specific requirements for each tier are:
+
+| Tier | Badge Name | Required Merged Pull Requests |
+| :--- | :--- | :--- |
+| 1 | **Default / x1** | **2** merged PRs |
+| 2 | **Bronze / x2** | **16** merged PRs |
+| 3 | **Silver / x3** | **128** merged PRs |
+| 4 | **Gold / x4** | **1024** merged PRs |
+
+> [!IMPORTANT]
+> Only merged PRs count toward this achievement. PRs that are closed without being merged do not contribute to your progress.
+
 ---
 
 ## ✅ Why Use This Method?
