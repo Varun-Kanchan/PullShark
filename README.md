@@ -1,11 +1,17 @@
-# 🦈 GitHub Pull Shark Automator
+<div align="center">
+
+[![Pull Shark Automator Banner](https://raw.githubusercontent.com/Shineii86/PullShark/refs/heads/main/images/PullShark.png)](https://github.com/Shineii86/PullShark)
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Shineii86/PullShark/blob/main/notebooks/PullShark.ipynb)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub Stars](https://img.shields.io/github/stars/Shineii86/PullShark?style=social)](https://github.com/Shineii86/PullShark)
 
-A **fully automated** Python script that runs in **Google Colab** (no PC required!) to create and merge multiple pull requests in your GitHub repository — helping you earn the coveted **Pull Shark** achievement.
+[![GitHub Stars](https://img.shields.io/github/stars/Shineii86/PullShark?style=for-the-badge)](https://github.com/Shineii86/PullShark/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/Shineii86/PullShark?style=for-the-badge)](https://github.com/Shineii86/PullShark/fork)
+
+A **fully automated** Python script that runs in **Google Colab** to create and merge multiple pull requests in your GitHub repository — helping you earn the coveted **Pull Shark** achievement.
+
+</div>
 
 ---
 
@@ -28,6 +34,12 @@ A **fully automated** Python script that runs in **Google Colab** (no PC require
 **Pull Shark** is a GitHub achievement awarded when you have **at least 2 pull requests merged** into any repository. It's one of the most popular achievements and a fun way to show off your open-source contributions.
 
 This script automates the creation and merging of pull requests, so you can unlock the achievement in **under 5 minutes** — entirely from your browser.
+
+
+| Base | Bronze | Silver | Gold |
+| :--: | :----: | :----: | :--: |
+| [![Base](https://github.com/Shineii86/PullShark/blob/main/images/pull-shark-default.png)](https://github.com/Shineii86/PullShark) | [![Bronze](https://github.com/Shineii86/PullShark/blob/main/images/pull-shark-bronze.png)](https://github.com/Shineii86/PullShark) | [![Sliver](https://github.com/Shineii86/PullShark/blob/main/images/pull-shark-silver.png)](https://github.com/Shineii86/PullShark) | [![Gold](https://github.com/Shineii86/PullShark/blob/main/images/pull-shark-gold.png)](https://github.com/Shineii86/PullShark) |
+
 
 ---
 
