@@ -94,7 +94,7 @@ Latest main commit: a1b2c3d
 🔗 Created PR: https://github.com/Shineii86/PullShark/pull/178
 ⏳ Waiting for GitHub to calculate mergeability...
 🎉 Merged PR #178
-⏸️  Pausing 10 seconds...
+⏸️ Pausing 10 seconds...
 ...
 🏁 Finished. Successfully merged 4 out of 4 pull requests.
 🦈 Congratulations! You've met the requirements for Pull Shark!
@@ -207,8 +207,4 @@ This project is licensed under the **MIT License** – see the [LICENSE](LICENSE
 
 ![Last Commit](https://img.shields.io/github/last-commit/Shineii86/PullShark?style=for-the-badge)
 
-
 </div>
-
-
-<p align="center">Made with ❤️ for GitHub achievement hunters</p>
