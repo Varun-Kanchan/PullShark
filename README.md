@@ -77,7 +77,7 @@ Before you begin, make sure you have:
 
 ### 1️⃣ **One‑Click Colab**
 
-<a href="https://colab.research.google.com/github/Shineii86/LeechBot/blob/main/notebooks/PullShark.ipynb">
+<a href="https://colab.research.google.com/github/Shineii86/PullShark/blob/main/notebooks/PullShark.ipynb">
   <img src="https://user-images.githubusercontent.com/125879861/255389999-a0d261cf-893a-46a7-9a3d-2bb52811b997.png" alt="Open In Colab" width="200px">
 </a>
 
