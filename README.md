@@ -144,8 +144,10 @@ Latest main commit: a1b2c3d
 ### 4️⃣ Verify the Achievement
 
 1. Go to your GitHub profile (`https://github.com/YOUR_USERNAME`).
-2. Look for the **Pull Shark** badge in the achievements section.  
-   *Note: It may take a few minutes for GitHub to update.*
+2. Look for the **Pull Shark** badge in the achievements section.
+
+> [!NOTE]
+> It May Take A Few Minutes For Github To Update.
 
 ---
 
