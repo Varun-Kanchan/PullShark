@@ -316,7 +316,7 @@ When using `--output report.json`, the file contains:
 
 ```json
 {
-  "version": "2.4.0",
+  "version": "2.4.6",
   "timestamp": "2026-05-09T02:37:00+00:00",
   "config": {
     "username": "Shineii86",
@@ -470,8 +470,8 @@ Every push and PR triggers the GitHub Actions workflow which:
 Tag a release to auto-publish to PyPI:
 
 ```bash
-git tag v2.4.0
-git push origin v2.4.0
+git tag v2.4.6
+git push origin v2.4.6
 ```
 
 The `publish.yml` workflow builds and publishes automatically via trusted publishing.

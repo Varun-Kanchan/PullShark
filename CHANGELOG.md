@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [2.4.6] — 2026-05-09
+
+### Fixed
+- Version alignment: all locations now match `2.4.5` (notebook footer, README examples, git tag example).
+- Removed stale `build/` directory and `report.json` from workspace.
+
+---
+
 ## [2.4.5] — 2026-05-09
 
 ### Changed

@@ -265,6 +265,7 @@ class TestProjectFiles:
     def test_changelog_versions(self):
         with open("CHANGELOG.md") as f:
             content = f.read()
+        assert "## [2.4.6]" in content
         assert "## [2.4.5]" in content
         assert "## [2.4.4]" in content
         assert "## [2.4.3]" in content
