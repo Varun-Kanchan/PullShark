@@ -26,7 +26,7 @@ A **fully automated** Python tool that creates and merges multiple pull requests
 ## 📖 Table of Contents
 
 - [What is Pull Shark?](#-what-is-pull-shark)
-- [Why Use This Method?](#-why-use-this-method)
+- [Features](#-features)
 - [Prerequisites](#-prerequisites)
 - [Project Structure](#-project-structure)
 - [Installation](#-installation)
@@ -36,9 +36,9 @@ A **fully automated** Python tool that creates and merges multiple pull requests
   - [As a Python Package](#3️⃣-as-a-python-package)
 - [Configuration Options](#-configuration-options)
 - [How It Works](#-how-it-works-technical-overview)
+- [Merge Methods](#-merge-methods)
 - [Troubleshooting](#-troubleshooting)
 - [Changelog](#-changelog)
-- [Credits & Acknowledgments](#-credits--acknowledgments)
 - [License & Disclaimer](#-license--disclaimer)
 
 ---
@@ -58,8 +58,6 @@ This script automates the creation and merging of pull requests, so you can unlo
 
 ### 🦈 Pull Shark Achievement Tiers
 
-The specific requirements for each tier are:
-
 | Tier | Badge Name | Required Merged Pull Requests |
 | :--- | :--- | :--- |
 | 1 | **Default / x1** | **2** merged PRs |
@@ -72,16 +70,20 @@ The specific requirements for each tier are:
 
 ---
 
-## ✅ Why Use This Method?
+## ✨ Features
 
-| Feature                      | Benefit                                                                 |
-|------------------------------|-------------------------------------------------------------------------|
-| ☁️ **No PC Required**         | Runs entirely in Google Colab (cloud‑based). Works on any device with a browser. |
-| 🖥️ **CLI Support**            | Run directly from your terminal — no browser needed.                     |
-| 🔁 **Fully Automated**        | Creates branches, commits changes, opens PRs, and merges them automatically. |
-| 🛡️ **Robust**                 | Handles GitHub's mergeability checks and branch‑update delays gracefully. |
-| ⚙️ **Customizable**           | Choose how many PRs to create, target branch, delay, and retry count.    |
-| 📦 **Modular Package**        | Clean Python package — import into your own scripts or use the CLI.      |
+| Feature | Description |
+|:--------|:------------|
+| ☁️ **Google Colab** | One-click notebook with 5-step guided flow — no install needed |
+| 🖥️ **CLI** | Full terminal interface with `run` and `clean` subcommands |
+| 🔍 **Dry Run** | Preview branches, commits, and PRs without making any changes |
+| 🧹 **Branch Cleanup** | Bulk-delete all `auto-pr-*` branches after a run |
+| 📊 **Rate Limit Check** | View your API quota before starting — prevents mid-run failures |
+| 🔀 **Merge Strategies** | Choose between `merge`, `squash`, or `rebase` methods |
+| 🔄 **Retry Logic** | Automatically retries failed merges with configurable attempts |
+| 📦 **Python Package** | Import into your own scripts for custom workflows |
+| 🐍 **`python -m`** | Run as `python -m pullshark` without installing |
+| ✅ **Validation** | Catches config errors before making any API calls |
 
 ---
 
@@ -109,12 +111,13 @@ Before you begin, make sure you have:
 PullShark/
 ├── pullshark/              # Python package
 │   ├── __init__.py         # Package init & version
+│   ├── __main__.py         # python -m pullshark support
 │   ├── config.py           # Configuration dataclass with validation
 │   ├── core.py             # PullSharkBot — main automation logic
 │   ├── utils.py            # Helpers (random strings, mergeability, retries)
-│   └── cli.py              # Command-line interface entry point
+│   └── cli.py              # Command-line interface (run & clean subcommands)
 ├── notebooks/
-│   └── PullShark.ipynb     # Google Colab notebook (thin wrapper)
+│   └── PullShark.ipynb     # Google Colab notebook (5-step guided flow)
 ├── images/                 # Achievement badge images
 ├── pyproject.toml          # Modern Python packaging config
 ├── requirements.txt        # Dependencies
@@ -153,11 +156,21 @@ pip install PyGithub>=2.1.0
   <img src="https://user-images.githubusercontent.com/125879861/255389999-a0d261cf-893a-46a7-9a3d-2bb52811b997.png" alt="Open In Colab" width="200px">
 </a>
 
-Open the notebook, fill in the configuration form fields, and click **Runtime → Run all** (`Ctrl+F9`).
+The notebook walks you through **5 steps**:
+
+| Step | Name | What it does |
+|:----:|:-----|:-------------|
+| 1 | 📦 **Install & Load** | Installs PyGithub and loads the package |
+| 2 | 🔌 **Test Connection** | Validates token, repo access, write permissions, API rate limit, and existing branches |
+| 3 | 🔍 **Dry Run** | Preview what the bot will do — no changes made |
+| 4 | 🚀 **Run for Real** | Create and merge PRs with full configuration |
+| 5 | 🧹 **Cleanup** | Delete all `auto-pr-*` branches (with dry-run safety) |
+
+> 💡 **Tip:** Start with Step 3 (Dry Run) to preview before committing to a real run.
 
 ### 2️⃣ Command Line (CLI)
 
-After installing with `pip install -e .`, use the `pullshark` command directly:
+After installing with `pip install -e .`, use the `pullshark` command:
 
 ```bash
 # Create and merge PRs
@@ -177,9 +190,12 @@ pullshark clean --token ghp_xxx --username YourUsername --repo YourRepo
 
 # Preview cleanup without deleting
 pullshark clean --token ghp_xxx --username YourUsername --repo YourRepo --dry-run
+
+# Run without installing
+python -m pullshark run --token ghp_xxx --username YourUsername --repo YourRepo
 ```
 
-> 💡 **Tip:** The `run` subcommand is optional — `pullshark --token ... --repo ...` still works as a shortcut.
+> 💡 The `run` subcommand is optional — `pullshark --token ... --repo ...` still works as a shortcut.
 
 #### CLI Arguments — `run`
 
@@ -211,8 +227,9 @@ pullshark clean --token ghp_xxx --username YourUsername --repo YourRepo --dry-ru
 Configuration: user='Shineii86' repo='PullShark'
 Base branch: main
 Will create 4 PR(s) with 10s delay.
+Merge method: merge
 
---- 📦 Creating PR #1 of 4 ---
+--- 📦 PR #1 of 4 ---
   Latest main commit: a1b2c3d
   ✅ Created branch: auto-pr-xyz123-1234567890
   📝 Updated README.md
@@ -221,7 +238,7 @@ Will create 4 PR(s) with 10s delay.
   🎉 Merged PR #178
   ⏸️  Pausing 10s for GitHub to process...
 
-🏁 Finished. Successfully merged 4 out of 4 pull requests.
+🏁 Finished. 4 out of 4 pull requests merged.
 🦈 Congratulations! You've met the requirements for Pull Shark!
 ```
 
@@ -239,23 +256,29 @@ config = Config(
     repo_name="YourRepo",
     num_prs=6,
     delay_seconds=15,
+    merge_method="squash",  # or "merge", "rebase"
 )
 
 bot = PullSharkBot(config)
 merged = bot.run()
 print(f"Merged {merged} PRs")
+
+# Clean up branches when done
+bot.clean()
 ```
 
 ---
 
 ## ⚙️ Configuration Options
 
-| Parameter        | Default  | Description                                                                 |
-|------------------|----------|-----------------------------------------------------------------------------|
-| `num_prs`        | `4`      | Total number of pull requests to create and merge. Minimum `2` for the badge.|
-| `base_branch`    | `"main"` | Target branch for PRs (e.g., `master`, `develop`).                           |
-| `delay_seconds`  | `10`     | Wait time (in seconds) between PRs and between merge retries.                |
-| `max_retries`    | `3`      | Number of times to retry a failed merge before stopping.                     |
+| Parameter | Default | Description |
+|:----------|:--------|:------------|
+| `num_prs` | `4` | Total number of pull requests to create and merge. Minimum `2` for the badge. |
+| `base_branch` | `"main"` | Target branch for PRs (e.g., `master`, `develop`). |
+| `delay_seconds` | `10` | Wait time (in seconds) between PRs and between merge retries. |
+| `max_retries` | `3` | Number of times to retry a failed merge before stopping. |
+| `merge_method` | `"merge"` | Merge strategy: `"merge"`, `"squash"`, or `"rebase"`. |
+| `dry_run` | `False` | If `True`, previews actions without making changes. |
 
 ### Advanced Customization
 
@@ -268,31 +291,44 @@ print(f"Merged {merged} PRs")
 
 The script performs the following steps for **each** pull request:
 
-1. **Fetch the latest commit SHA** from the specified `BASE_BRANCH` to ensure we branch from the most up‑to‑date state.  
+1. **Fetch the latest commit SHA** from the specified base branch to ensure we branch from the most up‑to‑date state.  
 2. **Create a new branch** with a unique name (e.g., `auto-pr-abc123-1234567890`).  
 3. **Make a commit** on that branch — either appending a line to `README.md` or creating it if it doesn't exist.  
-4. **Open a pull request** from the new branch to `BASE_BRANCH`.  
+4. **Open a pull request** from the new branch to the base branch.  
 5. **Wait for GitHub's mergeability check** (polling the PR status every 3 seconds).  
-6. **Merge the pull request** using the "merge" method (no squash, no rebase).  
+6. **Merge the pull request** using the configured merge method.  
 7. **Pause for `DELAY_SECONDS`** to let GitHub fully update the base branch before starting the next iteration.
 
 **Retry Logic**: If a merge fails (e.g., due to a temporary GitHub hiccup), the script will wait `DELAY_SECONDS` and retry up to `MAX_RETRIES` times before giving up.
 
-This robust approach avoids:
-- **405 Not Mergeable** errors caused by stale branch references.
-- **Race conditions** when GitHub's backend hasn't finished processing a merge.
+**Rate Limit Check**: With `--check-rate`, the bot inspects your remaining API quota before starting. Each PR cycle uses ~4 API calls, so the bot estimates whether you have enough.
+
+---
+
+## 🔀 Merge Methods
+
+PullShark supports three merge strategies. Choose based on your preference:
+
+| Method | Flag | What It Does | History |
+|:-------|:-----|:-------------|:--------|
+| **Merge** | `--merge-method merge` | Creates a merge commit joining the branch to base | Preserves all commits |
+| **Squash** | `--merge-method squash` | Combines all branch commits into a single commit | Clean, linear history |
+| **Rebase** | `--merge-method rebase` | Replays branch commits on top of base | Linear, no merge commit |
+
+> 💡 For Pull Shark achievement purposes, all three methods count equally. Use `squash` for cleaner history.
 
 ---
 
 ## 🆘 Troubleshooting
 
-| Issue                                             | Solution                                                                                     |
-|---------------------------------------------------|----------------------------------------------------------------------------------------------|
-| `github.GithubException.BadCredentialsException`  | Your Personal Access Token is incorrect or expired. Generate a new one and update the form.   |
-| `Pull Request is not mergeable: 405`              | Enable **Allow auto‑merge** in repo Settings → General → Pull Requests.                       |
-| The script hangs at "Waiting for mergeability"    | The PR may have a conflict. Delete the branch manually and re‑run the script.                 |
-| `RateLimitExceededException`                      | GitHub API rate limit hit. Wait an hour or increase `DELAY_SECONDS`.                          |
-| No achievement after successful runs              | Wait a few minutes and refresh your profile. Achievement updates are not always instant.      |
+| Issue | Solution |
+|:------|:---------|
+| `BadCredentialsException` | Token is wrong or expired. Generate a new one with `repo` scope. |
+| `405 Not mergeable` | Enable **Allow auto-merge** in repo Settings → General → Pull Requests. |
+| Hangs at "Waiting for mergeability" | PR may have a conflict. Delete the branch manually and retry. |
+| `RateLimitExceededException` | Wait an hour or increase `DELAY_SECONDS`. Use `--check-rate` to check beforehand. |
+| No badge after success | Wait a few minutes and refresh your profile. Achievement updates are not always instant. |
+| Leftover branches | Run `pullshark clean` to delete all `auto-pr-*` branches. |
 
 ---
 
