@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pullshark"
-version = "2.4.3"
+version = "2.4.4"
 description = "Automate pull request creation and merging to unlock GitHub's Pull Shark achievement."
 readme = "README.md"
 license = "MIT"

@@ -10,6 +10,7 @@ import time
 from github import Github, GithubException
 from github.Repository import Repository
 
+from pullshark import __version__
 from pullshark.config import Config
 from pullshark.utils import (
     build_run_report,
@@ -221,9 +222,13 @@ class PullSharkBot:
     # Watermark & credits appended to every commit and PR
     _WATERMARK = (
         "\n\n---\n"
-        "🦈 *Automated by [PullShark](https://github.com/Shineii86/PullShark)* "
-        "— *Created by [Sʜɪɴᴇɪ Nᴏᴜᴢᴇɴ](https://github.com/Shineii86)*"
-    )
+        "<div align=\"center\">\n\n"
+        "🦈 **Automated by [PullShark](https://github.com/Shineii86/PullShark)**\n\n"
+        "[![Author](https://img.shields.io/badge/Author-Sʜɪɴᴇɪ%20Nᴏᴜᴢᴇɴ-2ea44f?style=flat-square&logo=github)](https://github.com/Shineii86) "
+        "[![PullShark](https://img.shields.io/badge/PullShark-v{version}-blue?style=flat-square&logo=shark)](https://github.com/Shineii86/PullShark) "
+        "[![Stars](https://img.shields.io/github/stars/Shineii86/PullShark?style=flat-square&logo=github)](https://github.com/Shineii86/PullShark/stargazers)\n\n"
+        "</div>"
+    ).format(version=__version__)
 
     def _make_commit(self, branch_name: str) -> None:
         """Append a small change to README.md on the given branch."""

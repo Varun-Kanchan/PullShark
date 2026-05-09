@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [2.4.4] — 2026-05-09
+
+### Changed
+- Redesigned watermark with GitHub badges: author badge, version badge, stars badge.
+- Centered `<div>` layout with `flat-square` badge style for clean rendering.
+- Dynamic version number in PullShark badge via `__version__` import.
+
+---
+
 ## [2.4.3] — 2026-05-09
 
 ### Changed
