@@ -4,6 +4,7 @@
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Shineii86/PullShark/blob/main/notebooks/PullShark.ipynb)
 [![CI](https://github.com/Shineii86/PullShark/actions/workflows/ci.yml/badge.svg)](https://github.com/Shineii86/PullShark/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/pullshark.svg)](https://pypi.org/project/pullshark/)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -215,11 +216,11 @@ The notebook walks you through **5 steps**:
 |:----:|:-----|:-------------|
 | 1 | 📦 **Install & Load** | Installs PyGithub and loads the package |
 | 2 | 🔌 **Test Connection** | Validates token, repo access, write permissions, API rate limit, and existing branches |
-| 3 | 🔍 **Dry Run** | Preview what the bot will do — no changes made |
-| 4 | 🚀 **Run for Real** | Create and merge PRs with full configuration |
-| 5 | 🧹 **Cleanup** | Delete all auto-created branches (with dry-run safety) |
+| 3 | 🔍 **Dry Run** | Preview what the bot will do — no changes made *(auto-fills from Step 2)* |
+| 4 | 🚀 **Run for Real** | Create and merge PRs with full configuration *(auto-fills from Step 3)* |
+| 5 | 🧹 **Cleanup** | Delete all auto-created branches *(auto-fills from Step 4)* |
 
-> 💡 **Tip:** Run the styling cell first to enable dark/light mode support, then start with Step 3 (Dry Run).
+> 💡 **Tip:** Enter your credentials once in Step 2 — they flow through to Steps 3, 4, and 5 automatically. Run the styling cell first to enable dark/light mode support.
 
 ### 2️⃣ Command Line (CLI)
 
@@ -315,7 +316,7 @@ When using `--output report.json`, the file contains:
 
 ```json
 {
-  "version": "2.3.0",
+  "version": "2.4.0",
   "timestamp": "2026-05-09T02:37:00+00:00",
   "config": {
     "username": "Shineii86",
@@ -511,6 +512,7 @@ This project is licensed under the **MIT License** – see the [LICENSE](LICENSE
 
 ### 🔗 Quick Links
 
+- [PyPI Package](https://pypi.org/project/pullshark/)
 - [Google Colab](https://colab.research.google.com/)
 - [GitHub Personal Access Tokens](https://github.com/settings/tokens)
 - [Fine-Grained Tokens](https://github.com/settings/personal-access-tokens/new)
