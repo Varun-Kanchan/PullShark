@@ -160,17 +160,28 @@ Open the notebook, fill in the configuration form fields, and click **Runtime �
 After installing with `pip install -e .`, use the `pullshark` command directly:
 
 ```bash
-pullshark \
-  --token ghp_your_token_here \
-  --username YourUsername \
-  --repo YourRepo \
-  --prs 4 \
-  --branch main \
-  --delay 10 \
-  --max-retries 3
+# Create and merge PRs
+pullshark run --token ghp_xxx --username YourUsername --repo YourRepo --prs 4
+
+# Preview what would happen (no changes made)
+pullshark run --token ghp_xxx --username YourUsername --repo YourRepo --dry-run
+
+# Check API quota first
+pullshark run --token ghp_xxx --username YourUsername --repo YourRepo --check-rate
+
+# Use squash merge instead of regular merge
+pullshark run --token ghp_xxx --username YourUsername --repo YourRepo --merge-method squash
+
+# Clean up auto-created branches
+pullshark clean --token ghp_xxx --username YourUsername --repo YourRepo
+
+# Preview cleanup without deleting
+pullshark clean --token ghp_xxx --username YourUsername --repo YourRepo --dry-run
 ```
 
-#### CLI Arguments
+> 💡 **Tip:** The `run` subcommand is optional — `pullshark --token ... --repo ...` still works as a shortcut.
+
+#### CLI Arguments — `run`
 
 | Flag | Short | Required | Default | Description |
 |------|-------|:--------:|---------|-------------|
@@ -181,6 +192,18 @@ pullshark \
 | `--branch` | `-b` | | `main` | Base branch to target |
 | `--delay` | `-d` | | `10` | Delay (seconds) between PRs |
 | `--max-retries` | | | `3` | Max merge retry attempts |
+| `--merge-method` | | | `merge` | Merge strategy: `merge`, `squash`, `rebase` |
+| `--dry-run` | | | off | Preview mode — no changes made |
+| `--check-rate` | | | off | Show API quota before running |
+
+#### CLI Arguments — `clean`
+
+| Flag | Short | Required | Description |
+|------|-------|:--------:|-------------|
+| `--token` | `-t` | ✅ | GitHub Personal Access Token |
+| `--username` | `-u` | ✅ | Your GitHub username |
+| `--repo` | `-r` | ✅ | Target repository name |
+| `--dry-run` | | | Show branches that would be deleted without deleting |
 
 #### CLI Output Example
 

@@ -39,6 +39,7 @@ def merge_with_retry(
     pr: PullRequest,
     max_retries: int = 3,
     delay_seconds: int = 10,
+    merge_method: str = "merge",
 ) -> bool:
     """Attempt to merge a PR with retry logic.
 
@@ -46,13 +47,14 @@ def merge_with_retry(
         pr: The PullRequest to merge.
         max_retries: Number of attempts before giving up.
         delay_seconds: Wait time between retries.
+        merge_method: One of 'merge', 'squash', 'rebase'.
 
     Returns:
         True if merge succeeded, False otherwise.
     """
     for attempt in range(1, max_retries + 1):
         try:
-            pr.merge(merge_method="merge")
+            pr.merge(merge_method=merge_method)
             return True
         except GithubException as e:
             print(f"  ❌ Merge attempt {attempt}/{max_retries} failed: {e}")

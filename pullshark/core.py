@@ -18,6 +18,8 @@ from pullshark.utils import (
 class PullSharkBot:
     """Automates PR creation and merging for the Pull Shark achievement."""
 
+    BRANCH_PREFIX = "auto-pr-"
+
     def __init__(self, config: Config) -> None:
         self.config = config
         self._github: Github | None = None
@@ -50,8 +52,16 @@ class PullSharkBot:
 
         self._print_header()
 
+        if cfg.dry_run:
+            print("🔍 DRY RUN — no branches, commits, or PRs will be created.\n")
+
         for i in range(cfg.num_prs):
-            print(f"\n--- 📦 Creating PR #{i + 1} of {cfg.num_prs} ---")
+            print(f"\n--- 📦 PR #{i + 1} of {cfg.num_prs} ---")
+
+            if cfg.dry_run:
+                self._dry_run_preview(i + 1)
+                successful += 1
+                continue
 
             branch_name = self._create_branch()
             if not branch_name:
@@ -68,7 +78,7 @@ class PullSharkBot:
                 print("  ❌ PR not mergeable after waiting. Stopping.")
                 break
 
-            if merge_with_retry(pr, cfg.max_retries, cfg.delay_seconds):
+            if merge_with_retry(pr, cfg.max_retries, cfg.delay_seconds, cfg.merge_method):
                 print(f"  🎉 Merged PR #{pr.number}")
                 successful += 1
             else:
@@ -82,13 +92,71 @@ class PullSharkBot:
         self._print_summary(successful)
         return successful
 
+    def clean(self, dry_run: bool = False) -> int:
+        """Delete all auto-created branches (auto-pr-*) from the repo.
+
+        Returns:
+            Number of branches deleted (or that would be deleted in dry-run).
+        """
+        prefix = self.BRANCH_PREFIX
+        deleted = 0
+
+        print(f"\n🧹 Scanning for '{prefix}*' branches in {self.config.repo_name}...\n")
+
+        for branch in self.repo.get_branches():
+            if branch.name.startswith(prefix):
+                if dry_run:
+                    print(f"  🔍 Would delete: {branch.name}")
+                else:
+                    try:
+                        ref = self.repo.get_git_ref(f"heads/{branch.name}")
+                        ref.delete()
+                        print(f"  🗑️  Deleted: {branch.name}")
+                    except GithubException as e:
+                        print(f"  ❌ Failed to delete {branch.name}: {e}")
+                        continue
+                deleted += 1
+
+        if deleted == 0:
+            print("  ✨ No auto-pr branches found. Repo is clean!")
+        else:
+            action = "would be deleted" if dry_run else "deleted"
+            print(f"\n🏁 {deleted} branch(es) {action}.")
+
+        return deleted
+
+    def check_rate_limit(self) -> dict:
+        """Check GitHub API rate limit status.
+
+        Returns:
+            Dict with rate limit info.
+        """
+        rate = self.github.get_rate_limit()
+        core = rate.core
+        return {
+            "remaining": core.remaining,
+            "limit": core.limit,
+            "reset": core.reset.strftime("%H:%M:%S"),
+            "enough_for_run": core.remaining >= self.config.num_prs * 4,
+        }
+
     # -- Internals ------------------------------------------------------------
 
     def _print_header(self) -> None:
         cfg = self.config
-        print(f"\nConfiguration: user='{cfg.github_username}' repo='{cfg.repo_name}'")
+        mode = " [DRY RUN]" if cfg.dry_run else ""
+        print(f"\nConfiguration: user='{cfg.github_username}' repo='{cfg.repo_name}'{mode}")
         print(f"Base branch: {cfg.base_branch}")
-        print(f"Will create {cfg.num_prs} PR(s) with {cfg.delay_seconds}s delay.\n")
+        print(f"Will create {cfg.num_prs} PR(s) with {cfg.delay_seconds}s delay.")
+        print(f"Merge method: {cfg.merge_method}\n")
+
+    def _dry_run_preview(self, index: int) -> None:
+        """Preview what a PR would look like without creating anything."""
+        branch_name = f"{self.BRANCH_PREFIX}{generate_random_string(6)}-{int(time.time())}"
+        print(f"  📋 Would create branch: {branch_name}")
+        print(f"  📝 Would commit to: README.md")
+        print(f"  🔗 Would open PR #{index}: Auto-PR {generate_random_string(4)} #{index}")
+        print(f"  🎉 Would merge via: {self.config.merge_method}")
 
     def _create_branch(self) -> str | None:
         """Create a new branch from the latest base commit. Returns branch name or None."""
@@ -97,7 +165,7 @@ class PullSharkBot:
         sha = base.commit.sha
         print(f"  Latest {cfg.base_branch} commit: {sha[:7]}")
 
-        branch_name = f"auto-pr-{generate_random_string(6)}-{int(time.time())}"
+        branch_name = f"{self.BRANCH_PREFIX}{generate_random_string(6)}-{int(time.time())}"
         try:
             self.repo.create_git_ref(f"refs/heads/{branch_name}", sha)
             print(f"  ✅ Created branch: {branch_name}")
@@ -151,8 +219,10 @@ class PullSharkBot:
 
     def _print_summary(self, successful: int) -> None:
         total = self.config.num_prs
-        print(f"\n🏁 Finished. Successfully merged {successful} out of {total} pull requests.")
-        if successful >= 2:
-            print("🦈 Congratulations! You've met the requirements for Pull Shark!")
-        else:
-            print("⚠️  You need at least 2 merged PRs for the achievement.")
+        mode = " (dry run)" if self.config.dry_run else ""
+        print(f"\n🏁 Finished. {successful} out of {total} pull requests {'would be' if self.config.dry_run else ''} merged{mode}.")
+        if not self.config.dry_run:
+            if successful >= 2:
+                print("🦈 Congratulations! You've met the requirements for Pull Shark!")
+            else:
+                print("⚠️  You need at least 2 merged PRs for the achievement.")

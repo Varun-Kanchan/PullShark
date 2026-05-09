@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [2.2.0] — 2026-05-09
+
+### Added
+- `--dry-run` mode: preview branches, commits, and PRs without touching GitHub.
+- `pullshark clean` command: bulk-delete all `auto-pr-*` branches from a repo.
+- `--check-rate` flag: display GitHub API quota before starting a run.
+- `--merge-method` option: choose between `merge`, `squash`, or `rebase` strategies.
+- `python -m pullshark` support via `__main__.py`.
+- `PullSharkBot.clean()` method for programmatic branch cleanup.
+- `PullSharkBot.check_rate_limit()` method to inspect API quota.
+
+### Changed
+- CLI now uses subcommands (`pullshark run`, `pullshark clean`). Old flat args still work as a shortcut for `run`.
+
+---
+
 ## [2.1.0] — 2026-05-09
 
 ### Added

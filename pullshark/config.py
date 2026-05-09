@@ -2,7 +2,7 @@
 Configuration defaults and validation for PullShark.
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 
 @dataclass
@@ -16,6 +16,8 @@ class Config:
     base_branch: str = "main"
     delay_seconds: int = 10
     max_retries: int = 3
+    dry_run: bool = False
+    merge_method: str = "merge"
 
     def validate(self) -> list[str]:
         """Return a list of validation errors (empty = valid)."""
@@ -32,4 +34,6 @@ class Config:
             errors.append("DELAY_SECONDS cannot be negative.")
         if self.max_retries < 1:
             errors.append("MAX_RETRIES must be at least 1.")
+        if self.merge_method not in ("merge", "squash", "rebase"):
+            errors.append("MERGE_METHOD must be one of: merge, squash, rebase.")
         return errors
