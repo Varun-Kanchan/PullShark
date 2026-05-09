@@ -3,6 +3,7 @@
 [![Pull Shark Automator Banner](https://raw.githubusercontent.com/Shineii86/PullShark/refs/heads/main/images/PullShark.png)](https://github.com/Shineii86/PullShark)
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Shineii86/PullShark/blob/main/notebooks/PullShark.ipynb)
+[![CI](https://github.com/Shineii86/PullShark/actions/workflows/ci.yml/badge.svg)](https://github.com/Shineii86/PullShark/actions/workflows/ci.yml)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -17,7 +18,7 @@ A **fully automated** Python tool that creates and merges multiple pull requests
 
 > [!WARNING]
 > **This script creates real pull requests on your GitHub account.**
-> - Never share your **Personal Access Token** – treat it like a password.
+> - Never share your **Personal Access Token** — treat it like a password.
 > - Use a **dedicated repository** to avoid cluttering important projects.
 > - GitHub may rate‑limit excessive API calls; the built‑in delay helps prevent this.
 
@@ -37,6 +38,7 @@ A **fully automated** Python tool that creates and merges multiple pull requests
 - [Configuration Options](#-configuration-options)
 - [How It Works](#-how-it-works-technical-overview)
 - [Merge Methods](#-merge-methods)
+- [Testing & Contributing](#-testing--contributing)
 - [Troubleshooting](#-troubleshooting)
 - [Changelog](#-changelog)
 - [License & Disclaimer](#-license--disclaimer)
@@ -75,15 +77,20 @@ This script automates the creation and merging of pull requests, so you can unlo
 | Feature | Description |
 |:--------|:------------|
 | ☁️ **Google Colab** | One-click notebook with 5-step guided flow — no install needed |
+| 🎨 **Dark Mode** | Colab notebook auto-adapts to light and dark themes |
 | 🖥️ **CLI** | Full terminal interface with `run` and `clean` subcommands |
 | 🔍 **Dry Run** | Preview branches, commits, and PRs without making any changes |
-| 🧹 **Branch Cleanup** | Bulk-delete all `auto-pr-*` branches after a run |
+| 🧹 **Branch Cleanup** | Bulk-delete auto-created branches after a run |
 | 📊 **Rate Limit Check** | View your API quota before starting — prevents mid-run failures |
 | 🔀 **Merge Strategies** | Choose between `merge`, `squash`, or `rebase` methods |
 | 🔄 **Retry Logic** | Automatically retries failed merges with configurable attempts |
+| 📝 **Logging** | `--log file.log` saves timestamped debug output for auditing |
+| 📄 **JSON Reports** | `--output report.json` saves structured run results |
+| 🏷️ **Custom Prefix** | `--prefix mybot` to customize branch names |
 | 📦 **Python Package** | Import into your own scripts for custom workflows |
 | 🐍 **`python -m`** | Run as `python -m pullshark` without installing |
 | ✅ **Validation** | Catches config errors before making any API calls |
+| 🧪 **Tested** | 35+ pytest tests with CI on Python 3.9–3.12 |
 
 ---
 
@@ -93,15 +100,35 @@ Before you begin, make sure you have:
 
 1. **A GitHub account** — obviously 😄  
 2. **A repository** where you have **write access** (you can create a new one just for this).  
-3. **A GitHub Personal Access Token (Classic)** with `repo` scope.
+3. **A GitHub Personal Access Token** with `repo` scope.
 
 ### 🔐 How to Get a Personal Access Token
+
+<details>
+<summary><b>Classic Token (Recommended for beginners)</b></summary>
 
 1. Go to **Settings** → **Developer settings** → **Personal access tokens** → **Tokens (classic)**.
 2. Click **Generate new token (classic)**.
 3. Give it a name (e.g., `Pull Shark Bot`).
-4. Under **Select scopes**, check **`repo`** (this grants full control of private repositories as well).
-5. Click **Generate token** and **copy the token immediately** — you won't see it again.
+4. Under **Select scopes**, check **`repo`**.
+5. Click **Generate token** and **copy it immediately**.
+
+</details>
+
+<details>
+<summary><b>Fine-Grained Token (More secure, recommended)</b></summary>
+
+1. Go to **Settings** → **Developer settings** → **Personal access tokens** → **Fine-grained tokens**.
+2. Click **Generate new token**.
+3. Set **Resource owner** to your username.
+4. Under **Repository access**, select **Only select repositories** → pick your target repo.
+5. Under **Permissions** → **Repository permissions**, set:
+   - **Contents**: `Read and write`
+   - **Metadata**: `Read-only`
+   - **Pull requests**: `Read and write`
+6. Click **Generate token** and copy it.
+
+</details>
 
 ---
 
@@ -109,21 +136,27 @@ Before you begin, make sure you have:
 
 ```
 PullShark/
-├── pullshark/              # Python package
-│   ├── __init__.py         # Package init & version
-│   ├── __main__.py         # python -m pullshark support
-│   ├── config.py           # Configuration dataclass with validation
-│   ├── core.py             # PullSharkBot — main automation logic
-│   ├── utils.py            # Helpers (random strings, mergeability, retries)
-│   └── cli.py              # Command-line interface (run & clean subcommands)
+├── pullshark/                  # Python package
+│   ├── __init__.py             # Package init & version
+│   ├── __main__.py             # python -m pullshark support
+│   ├── config.py               # Configuration dataclass with validation
+│   ├── core.py                 # PullSharkBot — main automation logic
+│   ├── utils.py                # Helpers (random strings, mergeability, reports)
+│   └── cli.py                  # Command-line interface (run & clean subcommands)
+├── tests/
+│   └── test_pullshark.py       # pytest test suite (35+ tests)
 ├── notebooks/
-│   └── PullShark.ipynb     # Google Colab notebook (5-step guided flow)
-├── images/                 # Achievement badge images
-├── pyproject.toml          # Modern Python packaging config
-├── requirements.txt        # Dependencies
-├── CHANGELOG.md            # Version history
-├── LICENSE                 # MIT License
-└── README.md               # This file
+│   └── PullShark.ipynb         # Google Colab notebook (5-step guided flow)
+├── .github/
+│   └── workflows/
+│       └── ci.yml              # GitHub Actions CI (Python 3.9–3.12)
+├── images/                     # Achievement badge images
+├── pyproject.toml              # Python packaging + pytest + ruff config
+├── requirements.txt            # Dependencies
+├── CONTRIBUTING.md             # Contribution guidelines
+├── CHANGELOG.md                # Version history
+├── LICENSE                     # MIT License
+└── README.md                   # This file
 ```
 
 ---
@@ -139,6 +172,14 @@ pip install -e .
 ```
 
 This installs the `pullshark` CLI command and makes the package importable.
+
+### With Dev Dependencies (For Contributors)
+
+```bash
+pip install -e ".[dev]"
+```
+
+Installs pytest, pytest-cov, and ruff for testing and linting.
 
 ### Dependencies Only
 
@@ -164,9 +205,9 @@ The notebook walks you through **5 steps**:
 | 2 | 🔌 **Test Connection** | Validates token, repo access, write permissions, API rate limit, and existing branches |
 | 3 | 🔍 **Dry Run** | Preview what the bot will do — no changes made |
 | 4 | 🚀 **Run for Real** | Create and merge PRs with full configuration |
-| 5 | 🧹 **Cleanup** | Delete all `auto-pr-*` branches (with dry-run safety) |
+| 5 | 🧹 **Cleanup** | Delete all auto-created branches (with dry-run safety) |
 
-> 💡 **Tip:** Start with Step 3 (Dry Run) to preview before committing to a real run.
+> 💡 **Tip:** Run the styling cell first to enable dark/light mode support, then start with Step 3 (Dry Run).
 
 ### 2️⃣ Command Line (CLI)
 
@@ -182,14 +223,20 @@ pullshark run --token ghp_xxx --username YourUsername --repo YourRepo --dry-run
 # Check API quota first
 pullshark run --token ghp_xxx --username YourUsername --repo YourRepo --check-rate
 
-# Use squash merge instead of regular merge
-pullshark run --token ghp_xxx --username YourUsername --repo YourRepo --merge-method squash
+# Use squash merge with custom branch prefix
+pullshark run --token ghp_xxx --username YourUsername --repo YourRepo --merge-method squash --prefix mybot
+
+# Save logs and JSON report
+pullshark run --token ghp_xxx --username YourUsername --repo YourRepo --log run.log --output report.json
 
 # Clean up auto-created branches
 pullshark clean --token ghp_xxx --username YourUsername --repo YourRepo
 
 # Preview cleanup without deleting
 pullshark clean --token ghp_xxx --username YourUsername --repo YourRepo --dry-run
+
+# Clean with custom prefix
+pullshark clean --token ghp_xxx --username YourUsername --repo YourRepo --prefix mybot
 
 # Run without installing
 python -m pullshark run --token ghp_xxx --username YourUsername --repo YourRepo
@@ -209,8 +256,11 @@ python -m pullshark run --token ghp_xxx --username YourUsername --repo YourRepo
 | `--delay` | `-d` | | `10` | Delay (seconds) between PRs |
 | `--max-retries` | | | `3` | Max merge retry attempts |
 | `--merge-method` | | | `merge` | Merge strategy: `merge`, `squash`, `rebase` |
+| `--prefix` | | | `auto-pr` | Branch name prefix |
 | `--dry-run` | | | off | Preview mode — no changes made |
 | `--check-rate` | | | off | Show API quota before running |
+| `--log` | | | — | Save detailed logs to a file |
+| `--output` | | | — | Save run report as JSON |
 
 #### CLI Arguments — `clean`
 
@@ -219,7 +269,9 @@ python -m pullshark run --token ghp_xxx --username YourUsername --repo YourRepo
 | `--token` | `-t` | ✅ | GitHub Personal Access Token |
 | `--username` | `-u` | ✅ | Your GitHub username |
 | `--repo` | `-r` | ✅ | Target repository name |
+| `--prefix` | | Branch prefix to clean (default: `auto-pr`) |
 | `--dry-run` | | | Show branches that would be deleted without deleting |
+| `--log` | | | Save detailed logs to a file |
 
 #### CLI Output Example
 
@@ -227,11 +279,12 @@ python -m pullshark run --token ghp_xxx --username YourUsername --repo YourRepo
 Configuration: user='Shineii86' repo='PullShark'
 Base branch: main
 Will create 4 PR(s) with 10s delay.
-Merge method: merge
+Merge method: squash
+Branch prefix: mybot
 
 --- 📦 PR #1 of 4 ---
   Latest main commit: a1b2c3d
-  ✅ Created branch: auto-pr-xyz123-1234567890
+  ✅ Created branch: mybot-xyz123-1234567890
   📝 Updated README.md
   🔗 Created PR: https://github.com/Shineii86/PullShark/pull/178
   ⏳ Waiting for GitHub to calculate mergeability...
@@ -240,6 +293,36 @@ Merge method: merge
 
 🏁 Finished. 4 out of 4 pull requests merged.
 🦈 Congratulations! You've met the requirements for Pull Shark!
+
+📄 Report saved to report.json
+```
+
+#### JSON Report Format
+
+When using `--output report.json`, the file contains:
+
+```json
+{
+  "version": "2.3.0",
+  "timestamp": "2026-05-09T02:37:00+00:00",
+  "config": {
+    "username": "Shineii86",
+    "repo": "PullShark",
+    "base_branch": "main",
+    "num_prs": 4,
+    "merge_method": "squash",
+    "branch_prefix": "mybot"
+  },
+  "summary": {
+    "total": 4,
+    "successful": 4,
+    "failed": 0,
+    "pull_shark_tier": "Default"
+  },
+  "pull_requests": [
+    {"index": 1, "merged": true, "branch": "mybot-abc123", "pr_number": 178, "pr_url": "..."}
+  ]
+}
 ```
 
 ### 3️⃣ As a Python Package
@@ -256,7 +339,9 @@ config = Config(
     repo_name="YourRepo",
     num_prs=6,
     delay_seconds=15,
-    merge_method="squash",  # or "merge", "rebase"
+    merge_method="squash",
+    branch_prefix="mybot",
+    output_file="report.json",  # Save JSON report
 )
 
 bot = PullSharkBot(config)
@@ -265,6 +350,10 @@ print(f"Merged {merged} PRs")
 
 # Clean up branches when done
 bot.clean()
+
+# Check API quota
+info = bot.check_rate_limit()
+print(f"API: {info['remaining']}/{info['limit']} remaining")
 ```
 
 ---
@@ -278,7 +367,10 @@ bot.clean()
 | `delay_seconds` | `10` | Wait time (in seconds) between PRs and between merge retries. |
 | `max_retries` | `3` | Number of times to retry a failed merge before stopping. |
 | `merge_method` | `"merge"` | Merge strategy: `"merge"`, `"squash"`, or `"rebase"`. |
+| `branch_prefix` | `"auto-pr"` | Prefix for auto-generated branch names. |
 | `dry_run` | `False` | If `True`, previews actions without making changes. |
+| `log_file` | `""` | Path to save detailed debug logs. |
+| `output_file` | `""` | Path to save JSON run report. |
 
 ### Advanced Customization
 
@@ -319,6 +411,37 @@ PullShark supports three merge strategies. Choose based on your preference:
 
 ---
 
+## 🧪 Testing & Contributing
+
+### Running Tests
+
+```bash
+# Install dev dependencies
+pip install -e ".[dev]"
+
+# Run all tests
+pytest tests/ -v
+
+# Run with coverage
+pytest tests/ -v --cov=pullshark --cov-report=term-missing
+
+# Lint
+ruff check pullshark/ tests/
+```
+
+### CI Pipeline
+
+Every push and PR triggers the GitHub Actions workflow which:
+- Runs the test suite across Python 3.9, 3.10, 3.11, and 3.12
+- Lints code with ruff
+- Validates notebook JSON structure
+
+### Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, branch naming conventions, and PR guidelines.
+
+---
+
 ## 🆘 Troubleshooting
 
 | Issue | Solution |
@@ -328,7 +451,7 @@ PullShark supports three merge strategies. Choose based on your preference:
 | Hangs at "Waiting for mergeability" | PR may have a conflict. Delete the branch manually and retry. |
 | `RateLimitExceededException` | Wait an hour or increase `DELAY_SECONDS`. Use `--check-rate` to check beforehand. |
 | No badge after success | Wait a few minutes and refresh your profile. Achievement updates are not always instant. |
-| Leftover branches | Run `pullshark clean` to delete all `auto-pr-*` branches. |
+| Leftover branches | Run `pullshark clean` to delete all auto-created branches. |
 
 ---
 
@@ -350,8 +473,10 @@ This project is licensed under the **MIT License** – see the [LICENSE](LICENSE
 ### 🔗 Quick Links
 
 - [Google Colab](https://colab.research.google.com/)
-- [GitHub Personal Access Tokens](https://github.com/settings/tokens)    
+- [GitHub Personal Access Tokens](https://github.com/settings/tokens)
+- [Fine-Grained Tokens](https://github.com/settings/personal-access-tokens/new)
 - [Pull Shark Achievement Details](https://github.com/Schweinepriester/github-profile-achievements#pull-shark-)
+- [Contributing Guide](CONTRIBUTING.md)
 
 ---
 
