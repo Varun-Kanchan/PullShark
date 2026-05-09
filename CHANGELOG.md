@@ -18,6 +18,14 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - CLI now uses subcommands (`pullshark run`, `pullshark clean`). Old flat args still work as a shortcut for `run`.
 
+### Improved
+- Redesigned Colab notebook with 5-step flow: Install → Test → Dry Run → Run → Cleanup.
+- Step 2 now checks API rate limit and existing auto-pr branches.
+- Step 3 is a new dry-run preview cell for first-time users.
+- Step 4 adds merge method dropdown and rate limit pre-check toggle.
+- Step 5 is a new branch cleanup cell with dry-run safety toggle.
+- Added merge methods explainer to footer.
+
 ---
 
 ## [2.1.0] — 2026-05-09
