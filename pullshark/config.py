@@ -18,6 +18,9 @@ class Config:
     max_retries: int = 3
     dry_run: bool = False
     merge_method: str = "merge"
+    branch_prefix: str = "auto-pr"
+    log_file: str = ""
+    output_file: str = ""
 
     def validate(self) -> list[str]:
         """Return a list of validation errors (empty = valid)."""
@@ -36,4 +39,6 @@ class Config:
             errors.append("MAX_RETRIES must be at least 1.")
         if self.merge_method not in ("merge", "squash", "rebase"):
             errors.append("MERGE_METHOD must be one of: merge, squash, rebase.")
+        if not self.branch_prefix:
+            errors.append("BRANCH_PREFIX cannot be empty.")
         return errors

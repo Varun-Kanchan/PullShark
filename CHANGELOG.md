@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [2.3.0] — 2026-05-09
+
+### Added
+- Unit test suite (`tests/test_pullshark.py`) with pytest — 30+ tests covering config, utils, CLI, and project files.
+- GitHub Actions CI workflow (`.github/workflows/ci.yml`) — runs tests across Python 3.9–3.12, lints with ruff, validates notebook JSON.
+- `CONTRIBUTING.md` with development setup, workflow, and PR guidelines.
+- `--log FILE` flag to save detailed debug logs to a file.
+- `--output FILE` flag to save a structured JSON report of each run.
+- `--prefix` flag to customize branch name prefix (default: `auto-pr`).
+- `PullSharkBot.check_rate_limit()` returns API quota info before running.
+- Dark mode support in Colab notebook via CSS `@media` queries.
+- Fine-grained token instructions in notebook footer.
+- `[dev]` optional dependencies in `pyproject.toml` (pytest, pytest-cov, ruff).
+- pytest and ruff configuration in `pyproject.toml`.
+
+### Changed
+- `core.py` now uses Python `logging` module instead of bare `print` for debug output.
+- `utils.py` expanded with `build_run_report()`, `save_report()`, and `_get_tier()` helpers.
+- Notebook uses CSS classes (`.ps-alert`, `.ps-card`) for consistent dark/light styling.
+
+---
+
 ## [2.2.0] — 2026-05-09
 
 ### Added

@@ -2,12 +2,17 @@
 Utility helpers for PullShark.
 """
 
+import json
+import logging
 import random
 import string
 import time
+from datetime import datetime, timezone
 
 from github import GithubException
 from github.PullRequest import PullRequest
+
+logger = logging.getLogger("pullshark")
 
 
 def generate_random_string(length: int = 8) -> str:
@@ -57,9 +62,67 @@ def merge_with_retry(
             pr.merge(merge_method=merge_method)
             return True
         except GithubException as e:
-            print(f"  ❌ Merge attempt {attempt}/{max_retries} failed: {e}")
+            logger.warning("Merge attempt %d/%d failed: %s", attempt, max_retries, e)
             if attempt < max_retries:
-                print(f"  ⏳ Waiting {delay_seconds}s before retry...")
+                logger.info("Waiting %ds before retry...", delay_seconds)
                 time.sleep(delay_seconds)
                 pr.update()
     return False
+
+
+def build_run_report(results: list[dict], config) -> dict:
+    """Build a structured JSON report of the run.
+
+    Args:
+        results: List of per-PR result dicts.
+        config: The Config object used for the run.
+
+    Returns:
+        Report dict ready for JSON serialization.
+    """
+    successful = sum(1 for r in results if r.get("merged"))
+    return {
+        "version": "2.3.0",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "config": {
+            "username": config.github_username,
+            "repo": config.repo_name,
+            "base_branch": config.base_branch,
+            "num_prs": config.num_prs,
+            "merge_method": config.merge_method,
+            "branch_prefix": config.branch_prefix,
+            "delay_seconds": config.delay_seconds,
+            "max_retries": config.max_retries,
+        },
+        "summary": {
+            "total": config.num_prs,
+            "successful": successful,
+            "failed": config.num_prs - successful,
+            "pull_shark_tier": _get_tier(successful),
+        },
+        "pull_requests": results,
+    }
+
+
+def _get_tier(count: int) -> str:
+    if count >= 1024:
+        return "Gold"
+    if count >= 128:
+        return "Silver"
+    if count >= 16:
+        return "Bronze"
+    if count >= 2:
+        return "Default"
+    return "None"
+
+
+def save_report(report: dict, filepath: str) -> None:
+    """Save a run report to a JSON file.
+
+    Args:
+        report: The report dict from build_run_report.
+        filepath: Path to write the JSON file.
+    """
+    with open(filepath, "w") as f:
+        json.dump(report, f, indent=2)
+    logger.info("Report saved to %s", filepath)
