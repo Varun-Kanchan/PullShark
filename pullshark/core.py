@@ -218,6 +218,13 @@ class PullSharkBot:
             logger.error("Failed to create branch: %s", e)
             return None
 
+    # Watermark & credits appended to every commit and PR
+    _WATERMARK = (
+        "\n\n---\n"
+        "🦈 *Automated by [PullShark](https://github.com/Shineii86/PullShark)* "
+        "— *Created by [Sʜɪɴᴇɪ Nᴏᴜᴢᴇɴ](https://github.com/Shineii86)*"
+    )
+
     def _make_commit(self, branch_name: str) -> None:
         """Append a small change to README.md on the given branch."""
         try:
@@ -225,6 +232,7 @@ class PullSharkBot:
             new_content = (
                 f"{contents.decoded_content.decode()}\n"
                 f"- 🤖 Auto-update by PullShark: {generate_random_string()}"
+                f"{self._WATERMARK}"
             )
             self.repo.update_file(
                 contents.path,
@@ -241,7 +249,7 @@ class PullSharkBot:
             self.repo.create_file(
                 "README.md",
                 f"Create README in {branch_name}",
-                f"# {self.config.repo_name}\n\nAuto-generated: {generate_random_string()}\n\n---\n🦈 PR Automation By [Shinei Nouzen](https://github.com/Shineii86/PullShark)",
+                f"# {self.config.repo_name}\n\nAuto-generated: {generate_random_string()}{self._WATERMARK}",
                 branch=branch_name,
             )
             print("  📄 Created README.md")
@@ -253,8 +261,8 @@ class PullSharkBot:
             pr = self.repo.create_pull(
                 title=f"Auto-PR {generate_random_string(4)} #{index}",
                 body=(
-                    "🤖 Automated pull request for the Pull Shark achievement.\n\n"
-                    "---\n🦈 PR Automation By [Shinei Nouzen](https://github.com/Shineii86)"
+                    "🤖 Automated pull request for the Pull Shark achievement."
+                    f"{self._WATERMARK}"
                 ),
                 head=branch_name,
                 base=self.config.base_branch,

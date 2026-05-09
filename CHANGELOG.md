@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [2.4.3] — 2026-05-09
+
+### Changed
+- Unified watermark & credits across all outputs: commit messages, README content, and PR body.
+- Single `_WATERMARK` constant in `PullSharkBot` — consistent format with repo link + creator credit.
+- Watermark now appears in both README update AND create paths (previously missing from updates).
+
+---
+
 ## [2.4.2] — 2026-05-09
 
 ### Fixed
