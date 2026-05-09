@@ -231,7 +231,9 @@ class PullSharkBot:
             )
             print("  📝 Updated README.md")
             logger.info("Updated README.md on %s", branch_name)
-        except GithubException:
+        except GithubException as e:
+            if e.status != 404:
+                raise
             self.repo.create_file(
                 "README.md",
                 f"Create README in {branch_name}",

@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [2.4.1] — 2026-05-09
+
+### Fixed
+- `pyproject.toml`: corrected invalid build-backend from `setuptools.backends._legacy:_Backend` to `setuptools.build_meta`.
+- `pyproject.toml`: explicit package discovery (`[tool.setuptools.packages.find]`) to prevent `images/` and `notebooks/` being treated as Python packages.
+- `pyproject.toml`: migrated `license` from deprecated table format to SPDX expression string.
+- `pyproject.toml`: removed deprecated `License :: OSI Approved :: MIT License` classifier.
+- `core.py`: `_make_commit()` now re-raises non-404 `GithubException` instead of silently catching all GitHub errors.
+- `utils.py`: `build_run_report()` now uses `__version__` dynamically instead of hardcoded `"2.3.0"`.
+- `__main__.py`: added `if __name__ == "__main__"` guard to prevent execution on import.
+- `.github/workflows/publish.yml`: reordered jobs — `test` now appears before `publish` for logical readability.
+
+### Improved
+- `tests/test_pullshark.py`: changelog version test now validates all six versions (1.0.0–2.4.0).
+
+---
+
 ## [2.4.0] — 2026-05-09
 
 ### Added

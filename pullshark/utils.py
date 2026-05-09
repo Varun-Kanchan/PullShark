@@ -14,6 +14,8 @@ from datetime import datetime, timezone
 from github import GithubException
 from github.PullRequest import PullRequest
 
+from pullshark import __version__
+
 logger = logging.getLogger("pullshark")
 
 
@@ -84,7 +86,7 @@ def build_run_report(results: list[dict], config) -> dict:
     """
     successful = sum(1 for r in results if r.get("merged"))
     return {
-        "version": "2.3.0",
+        "version": __version__,
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "config": {
             "username": config.github_username,
