@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "pullshark"
+version = "2.1.0"
+description = "Automate pull request creation and merging to unlock GitHub's Pull Shark achievement."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+authors = [
+    {name = "Sʜɪɴᴇɪ Nᴏᴜᴢᴇɴ", email = "ikx7a@hotmail.com"},
+]
+keywords = ["github", "pull-request", "automation", "achievement", "pull-shark"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "PyGithub>=2.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Shineii86/PullShark"
+Repository = "https://github.com/Shineii86/PullShark"
+Issues = "https://github.com/Shineii86/PullShark/issues"
+
+[project.scripts]
+pullshark = "pullshark.cli:main"
