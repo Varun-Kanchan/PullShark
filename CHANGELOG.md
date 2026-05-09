@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [2.4.2] — 2026-05-09
+
+### Fixed
+- `core.py`: `check_rate_limit()` now uses `rate.rate` fallback for PyGithub 2.9+ compatibility (`rate.core` removed).
+- `core.py`: `github` property now uses `github.Auth.Token()` with fallback for older PyGithub versions.
+- Validated end-to-end: 4/4 PRs merged on `Shineii86/Achievements` via squash method.
+
+---
+
 ## [2.4.1] — 2026-05-09
 
 ### Fixed

@@ -35,7 +35,11 @@ class PullSharkBot:
     @property
     def github(self) -> Github:
         if self._github is None:
-            self._github = Github(self.config.github_token)
+            try:
+                import github.Auth
+                self._github = Github(auth=github.Auth.Token(self.config.github_token))
+            except (ImportError, AttributeError):
+                self._github = Github(self.config.github_token)
         return self._github
 
     @property
@@ -168,7 +172,7 @@ class PullSharkBot:
             Dict with rate limit info.
         """
         rate = self.github.get_rate_limit()
-        core = rate.core
+        core = getattr(rate, "core", None) or rate.rate
         return {
             "remaining": core.remaining,
             "limit": core.limit,
