@@ -2,6 +2,8 @@
 Configuration defaults and validation for PullShark.
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 
 

@@ -2,6 +2,8 @@
 Core automation logic for PullShark.
 """
 
+from __future__ import annotations
+
 import logging
 import time
 
@@ -190,7 +192,7 @@ class PullSharkBot:
         prefix = self.config.branch_prefix
         branch_name = f"{prefix}-{generate_random_string(6)}-{int(time.time())}"
         print(f"  📋 Would create branch: {branch_name}")
-        print(f"  📝 Would commit to: README.md")
+        print("  📝 Would commit to: README.md")
         print(f"  🔗 Would open PR #{index}: Auto-PR {generate_random_string(4)} #{index}")
         print(f"  🎉 Would merge via: {self.config.merge_method}")
 

@@ -7,6 +7,8 @@ Usage:
     pullshark clean --token ghp_xxx --repo myrepo
 """
 
+from __future__ import annotations
+
 import argparse
 import logging
 import sys

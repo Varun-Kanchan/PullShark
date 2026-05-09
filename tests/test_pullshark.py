@@ -6,8 +6,6 @@ import json
 import os
 import tempfile
 
-import pytest
-
 from pullshark import __version__
 from pullshark.config import Config
 from pullshark.core import PullSharkBot
