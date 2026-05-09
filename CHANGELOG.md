@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [2.4.0] — 2026-05-09
+
+### Added
+- PyPI auto-publish workflow (`.github/workflows/publish.yml`) — tag a release `v*` and it publishes automatically.
+- Pre-commit hooks (`.pre-commit-config.yaml`) — ruff lint/format, trailing whitespace, YAML/JSON checks, pytest.
+- Dependabot config (`.github/dependabot.yml`) — weekly dependency and GitHub Actions updates.
+- Colab Step 3 auto-fills credentials from Step 2.
+- Colab Step 4 auto-fills credentials and merge method from Step 3.
+
+### Changed
+- Users can now `pip install pullshark` from PyPI after first tagged release.
+
+---
+
 ## [2.3.0] — 2026-05-09
 
 ### Added

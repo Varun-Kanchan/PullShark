@@ -91,6 +91,8 @@ This script automates the creation and merging of pull requests, so you can unlo
 | 🐍 **`python -m`** | Run as `python -m pullshark` without installing |
 | ✅ **Validation** | Catches config errors before making any API calls |
 | 🧪 **Tested** | 35+ pytest tests with CI on Python 3.9–3.12 |
+| 📦 **PyPI** | `pip install pullshark` — install from PyPI |
+| 🔧 **Pre-Commit** | Ruff lint/format + pytest hooks for contributors |
 
 ---
 
@@ -148,11 +150,14 @@ PullShark/
 ├── notebooks/
 │   └── PullShark.ipynb         # Google Colab notebook (5-step guided flow)
 ├── .github/
-│   └── workflows/
-│       └── ci.yml              # GitHub Actions CI (Python 3.9–3.12)
+│   ├── workflows/
+│   │   ├── ci.yml              # CI on push/PR (Python 3.9–3.12)
+│   │   └── publish.yml         # PyPI publish on tag
+│   └── dependabot.yml          # Auto dependency updates
 ├── images/                     # Achievement badge images
 ├── pyproject.toml              # Python packaging + pytest + ruff config
 ├── requirements.txt            # Dependencies
+├── .pre-commit-config.yaml     # Pre-commit hooks (ruff, pytest, linting)
 ├── CONTRIBUTING.md             # Contribution guidelines
 ├── CHANGELOG.md                # Version history
 ├── LICENSE                     # MIT License
@@ -163,7 +168,13 @@ PullShark/
 
 ## 📥 Installation
 
-### From Source (Recommended)
+### From PyPI (Easiest)
+
+```bash
+pip install pullshark
+```
+
+### From Source (Recommended for Contributors)
 
 ```bash
 git clone https://github.com/Shineii86/PullShark.git
@@ -177,9 +188,10 @@ This installs the `pullshark` CLI command and makes the package importable.
 
 ```bash
 pip install -e ".[dev]"
+pip install pre-commit && pre-commit install
 ```
 
-Installs pytest, pytest-cov, and ruff for testing and linting.
+Installs pytest, pytest-cov, ruff, and sets up pre-commit hooks.
 
 ### Dependencies Only
 
@@ -429,12 +441,39 @@ pytest tests/ -v --cov=pullshark --cov-report=term-missing
 ruff check pullshark/ tests/
 ```
 
+### Pre-Commit Hooks
+
+For contributors, pre-commit hooks run automatically before each commit:
+
+```bash
+pip install pre-commit
+pre-commit install
+```
+
+Hooks include:
+- **ruff** — lint and auto-format Python code
+- **trailing-whitespace** — remove trailing spaces
+- **end-of-file-fixer** — ensure files end with newline
+- **check-yaml / check-json** — validate config files
+- **pytest** — run the test suite
+
 ### CI Pipeline
 
 Every push and PR triggers the GitHub Actions workflow which:
 - Runs the test suite across Python 3.9, 3.10, 3.11, and 3.12
 - Lints code with ruff
 - Validates notebook JSON structure
+
+### Publishing (Maintainers)
+
+Tag a release to auto-publish to PyPI:
+
+```bash
+git tag v2.4.0
+git push origin v2.4.0
+```
+
+The `publish.yml` workflow builds and publishes automatically via trusted publishing.
 
 ### Contributing
 
