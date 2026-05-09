@@ -4,7 +4,7 @@
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Shineii86/PullShark/blob/main/notebooks/PullShark.ipynb)
 [![CI](https://github.com/Shineii86/PullShark/actions/workflows/ci.yml/badge.svg)](https://github.com/Shineii86/PullShark/actions/workflows/ci.yml)
-[![PyPI](https://img.shields.io/pypi/v/pullshark.svg)](https://pypi.org/project/pullshark/)
+[![PyPI](https://img.shields.io/pypi/v/pullshark.svg?style=flat-square)](https://pypi.org/project/pullshark/)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
