@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [2.4.5] — 2026-05-09
+
+### Changed
+- Colab notebook footer updated with badge watermark (Author, Version, Stars, Forks).
+- Fixed Colab Step 2: `rate.core` → `rate.rate` for PyGithub 2.9+ compatibility.
+
+---
+
 ## [2.4.4] — 2026-05-09
 
 ### Changed
